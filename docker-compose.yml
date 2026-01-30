@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  etl-script:
+    build: .
+    volumes:
+      - .:/app          # Persists your Python code and any outputted files (CSV/Logs)
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: postgres:13
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persists the actual database tables
+
+volumes:
+  postgres_data:        # This names the volume for the database
